@@ -11,8 +11,5 @@
         {
             "name": "http://dave-baker.com"
         }
-    ],
-    "bin": [
-        "magmi/cli/magmi.cli.php"
     ]
 }
