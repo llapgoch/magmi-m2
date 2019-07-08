@@ -1,15 +1,15 @@
 {
-    "name": "macopedia/magmi2",
+    "name": "llapgoch/magmi2",
     "description": "Magento Mass Importer 'Magmi' for Magento 2",
     "license": "MIT",
-    "homepage": "http://macopedia.com",
+    "homepage": "http://dave-baker.com",
     "authors":[
         {
-            "name": "Sebastien Bracquemont",
-            "homepage": "http://sourceforge.net/projects/magmi/"
+            "name": "Dave Baker",
+            "homepage": "http://dave-baker.com/"
         },
         {
-            "name": "Macopedia.com team"
+            "name": "http://dave-baker.com"
         }
     ],
     "bin": [
