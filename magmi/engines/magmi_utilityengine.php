@@ -68,6 +68,7 @@ class Magmi_UtilityEngine extends Magmi_Engine
                 $pinst->runUtility();
             } catch (Exception $e) {
                 $this->logException($e);
+                throw $e;
             }
         }
 

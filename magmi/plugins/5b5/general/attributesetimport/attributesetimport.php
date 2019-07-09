@@ -712,6 +712,7 @@ class AttributeSetImporter extends Magmi_GeneralImportPlugin
                 // exception within loop -> log Exception
                 $this->log("Exception in update/insert loop for entity '$entityName' in record no $currentRecordNo: ".$e->getMessage().",see trace log!", 'info');
                 $this->trace($e, "Exception in update/insert loop for entity '$entityName' in record no $currentRecordNo: ".$e->getMessage()."\nrecord data:".print_r($record, true).(isset($originalRecord)?"\noriginal record data:".print_r($originalRecord, true):""));
+                throw $e;
             }
         }
 

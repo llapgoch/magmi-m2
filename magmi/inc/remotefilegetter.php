@@ -238,6 +238,7 @@ class CURL_RemoteFileGetter extends RemoteFileGetter
             $result = $this->getRemoteFile($url, $dest, $this->_cookie);
         } catch (Exception $e) {
             $this->_errors = array("type"=>"source error","message"=>$e->getMessage(),"exception"=>$e);
+            throw $e;
         }
         return $result;
     }

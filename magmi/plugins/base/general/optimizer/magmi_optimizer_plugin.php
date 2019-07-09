@@ -24,6 +24,7 @@ class Magmi_OptimizerPlugin extends Magmi_GeneralImportPlugin
             } catch (Exception $e) {
                 // ignore exception
                 $this->log("Already optmized!", "info");
+                throw $e;
             }
         }
         return true;

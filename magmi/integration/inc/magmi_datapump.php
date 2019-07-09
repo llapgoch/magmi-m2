@@ -22,6 +22,7 @@ class Magmi_DataPumpFactory
                 $pumpinst = new $pumpclass();
             } catch (Exception $e) {
                 $pumpinst = null;
+                throw $e;
             }
         } else {
             echo "Invalid Pump Type";

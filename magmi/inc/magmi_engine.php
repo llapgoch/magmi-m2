@@ -1,4 +1,5 @@
 <?php
+
 require_once("dbhelper.class.php");
 require_once("magmi_config.php");
 require_once("magmi_version.php");
@@ -436,6 +437,7 @@ abstract class Magmi_Engine extends DbHelper
             }
         } catch (Exception $te) {
             fwrite($f, "Exception occured during trace:" . $te->getMessage());
+            throw $te;
         }
         fwrite($f, "---- ENDTRACE : $this->_excid -----\n");
         fclose($f);
@@ -466,6 +468,7 @@ abstract class Magmi_Engine extends DbHelper
             $this->disconnectFromMagento();
 
             $this->handleException($e);
+            throw $e;
         }
     }
 

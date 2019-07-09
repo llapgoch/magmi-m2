@@ -1008,13 +1008,15 @@ class Magmi_ProductImportEngine extends Magmi_Engine
         try
         {
             $this->initProdType();
+            
             $this->createPlugins($this->_profile, $params);
+    
             $this->_registerPluginLoopCallback("processItemAfterId", "onPluginProcessedItemAfterId");
             $this->callPlugins("datasources,general,itemprocessors", "beforeImport");
             $this->resetSkuStats();
-        } catch (Exception $e)
-        {
+        } catch (Exception $e){
             $this->disconnectFromMagento();
+            throw $e;
         }
     }
 
@@ -1319,6 +1321,7 @@ class Magmi_ProductImportEngine extends Magmi_Engine
                 return false;
             }
             // if column list has been modified by callback, update attribute info cache.
+            
             $this->initAttrInfos(array_keys($item));
             // create new ones
             $attrmap = $this->attrbytype;
@@ -1577,6 +1580,7 @@ class Magmi_ProductImportEngine extends Magmi_Engine
      */
     public function createAttributes($pid, &$item, $attmap, $isnew, $itemids)
     {
+        
         /**
          * get all store ids
          */
@@ -1607,6 +1611,7 @@ class Magmi_ProductImportEngine extends Magmi_Engine
             // iterate on all attribute descriptions for the given backend type
             foreach ($a["data"] as $attrdesc)
             {
+                
                 // get attribute id
                 $attid = $attrdesc["attribute_id"];
                 // get attribute set id
@@ -1655,7 +1660,7 @@ class Magmi_ProductImportEngine extends Magmi_Engine
                 }
                 //attribute handler for attribute
                 $handlers = $this->getHandlers($attrdesc);
-
+                
                 // for all store ids
                 foreach ($store_ids as $store_id)
                 {
@@ -1671,6 +1676,7 @@ class Magmi_ProductImportEngine extends Magmi_Engine
                             //get handler info array for current handler (handler instance & callback name)
                             list($hdl, $cb) = $handlers[$i];
                             //call appropriate callback on current handler to get return value to insert in DB
+                        
                             $hvalue = $hdl->$cb($pid, $item, $store_id, $attrcode, $attrdesc, $ivalue);
                             //if valid value returned, take it as output value & break
                             if (isset($hvalue) && $hvalue != '__MAGMI_UNHANDLED__')
@@ -1777,6 +1783,7 @@ class Magmi_ProductImportEngine extends Magmi_Engine
      */
     public function getHandlers($attrdesc)
     {
+     
         $attrcode = $attrdesc['attribute_code'];
         $atype = $attrdesc['backend_type'];
         // use reflection to find special handlers
@@ -1811,6 +1818,7 @@ class Magmi_ProductImportEngine extends Magmi_Engine
             $this->_handlercache[$attrcode] = $handlers;
             unset($handlers);
         }
+        
         return $this->_handlercache[$attrcode];
     }
 
