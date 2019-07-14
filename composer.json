@@ -10,11 +10,15 @@
     },
     "authors":[
         {
-            "name": "Dave Baker",
-            "homepage": "http://dave-baker.com/"
+            "name": "Sebastien Bracquemont",
+            "homepage": "http://sourceforge.net/projects/magmi/"
         },
         {
-            "name": "http://dave-baker.com"
+            "name": "Macopedia.com team"
+        },
+        {
+            "name": "Dave Baker",
+            "homepage": "http://dave-baker.com/"
         }
     ]
 }
