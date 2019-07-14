@@ -383,7 +383,7 @@ abstract class Magmi_Engine extends DbHelper
 
     public function logException($e, $data = "", $logger = null)
     {
-        $this->trace($e, $data);
+        // $this->trace($e, $data);
         $this->log($this->_excid . ":" . $e->getMessage() . " - " . $data, "error", $logger);
     }
 
@@ -403,7 +403,7 @@ abstract class Magmi_Engine extends DbHelper
                     }
                     $trstr .= "\n----------------------------------------\n";
                     if (isset($trace["args"])) {
-                        $trstr .= print_r($trace["args"], true);
+                        // $trstr .= print_r($trace["args"], true);
                     }
                     $trstr .= "\n";
                 }
@@ -460,8 +460,10 @@ abstract class Magmi_Engine extends DbHelper
             if (!$this->_initialized) {
                 $this->initialize($params);
             }
+            
             $this->connectToMagento();
             $this->engineInit($params);
+            
             $this->engineRun($params);
             $this->disconnectFromMagento();
         } catch (Exception $e) {
