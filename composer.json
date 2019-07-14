@@ -3,6 +3,14 @@
     "description": "Magento Mass Importer 'Magmi' for Magento 2",
     "license": "MIT",
     "homepage": "http://dave-baker.com",
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Llapgoch\\Magmi\\": ""
+        }
+    },
     "authors":[
         {
             "name": "Dave Baker",
