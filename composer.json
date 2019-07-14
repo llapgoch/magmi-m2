@@ -4,9 +4,9 @@
     "license": "MIT",
     "homepage": "http://dave-baker.com",
     "autoload": {
-        "psr-4": {
-            "Horse\\Hat\\": "magmi/engines"
-        }
+        "classmap": [
+            "magmi/engines/magmi_productimportengine.php"
+        ]
     },
     "authors":[
         {
