@@ -5,7 +5,7 @@
     "homepage": "http://dave-baker.com",
     "autoload": {
         "psr-4": {
-            "Horse\\Hat\\": "magmi/engines"
+            "Horse\\Hat\\": "magmi/engines/"
         }
     },
     "authors":[
