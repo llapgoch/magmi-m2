@@ -4,11 +4,8 @@
     "license": "MIT",
     "homepage": "http://dave-baker.com",
     "autoload": {
-        "files": [
-            "registration.php"
-        ],
         "psr-4": {
-            "Llapgoch\\Magmi\\": ""
+            "Horse\\Hat\\": "magmi/engines"
         }
     },
     "authors":[
