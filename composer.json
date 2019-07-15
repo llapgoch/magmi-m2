@@ -2,7 +2,7 @@
     "name": "macopedia/magmi2",
     "description": "Magento Mass Importer 'Magmi' for Magento 2",
     "license": "MIT",
-    "homepage": "http://dave-baker.com",
+    "homepage": "https://macopedia.com/",
     "autoload": {
         "classmap": [
             "magmi/engines/magmi_productimportengine.php"
