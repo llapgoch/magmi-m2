@@ -1841,7 +1841,7 @@ class Magmi_ProductImportEngine extends Magmi_Engine
     {
         $cce = $this->tablename("catalog_category_entity");
         $ccpt = $this->tablename("catalog_category_product");
-        // andle assignment reset
+        // handle assignment reset
         if (isset($item["category_reset"]) && (int) $item["category_reset"] == 1)
         {
             $sql = "DELETE $ccpt.*
