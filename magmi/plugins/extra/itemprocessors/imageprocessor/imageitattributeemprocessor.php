@@ -296,18 +296,27 @@ class ImageAttributeItemProcessor extends Magmi_ItemProcessor
         $tg = $this->tablename('catalog_product_entity_media_gallery');
         $tgv = $this->tablename('catalog_product_entity_media_gallery_value');
         $vid = $this->getImageId($pid, $gal_attinfo["attribute_id"], $imgname, $refid, $storeid);
+        
         if ($vid != null) {
 
-            // et maximum current position in the product gallery
-            $sql = "SELECT MAX( position ) as maxpos
-					 FROM $tgv AS emgv
-					 JOIN $tg AS emg ON emg.value_id = emgv.value_id AND emgv.entity_id = ?
-					 WHERE emgv.store_id=?
-			 		 GROUP BY emgv.entity_id";
-            $pos = $this->selectone($sql, array($pid, $storeid), 'maxpos');
-            $pos = ($pos == null ? 1 : $pos + 1);
-            // nsert new value (ingnore duplicates)
+            // Get the current position of the item
+            $sql = "SELECT position FROM $tgv 
+                    WHERE value_id = ?";
 
+            $pos = $this->selectone($sql, [$vid], 'position');
+           
+            if($pos == null){
+                // et maximum current position in the product gallery
+                $sql = "SELECT MAX( position ) as maxpos
+                        FROM $tgv AS emgv
+                        JOIN $tg AS emg ON emg.value_id = emgv.value_id AND emgv.entity_id = ?
+                        WHERE emgv.store_id=?
+                        GROUP BY emgv.entity_id";
+                $pos = $this->selectone($sql, array($pid, $storeid), 'maxpos');
+                $pos = ($pos == null ? 1 : $pos + 1);
+            }
+
+            // insert new value (ingnore duplicates)
             $vinserts = array();
             $data = array();
 
@@ -324,8 +333,22 @@ class ImageAttributeItemProcessor extends Magmi_ItemProcessor
                 $sql = "SELECT value_id FROM $tgv WHERE value_id = ?";
                 $valueId = $this->selectone($sql, array($vid), 'value_id');
                 if ($valueId) {
-                    $sql = "UPDATE $tgv SET store_id = ?, entity_id = ?, label = ?, position = ? WHERE value_id = ?";
-                    $this->update($sql, array($storeid, $pid, $imglabel, $pos, $valueId));
+                    $sql = "UPDATE $tgv SET store_id = :store_id, entity_id = :entity_id, " .  ($imglabel !== null ? "label = :label, " : "") . " position = :position WHERE value_id = :value_id";
+                    
+                    $updateData = array(
+                        "store_id" => $storeid, 
+                        "entity_id" => $pid, 
+                        "label" => $imglabel, 
+                        "position" => $pos, 
+                        "value_id" => $valueId
+                    );
+
+                    // Remove the imglabel from the update if it's not set.
+                    if($imglabel === null){
+                        unset($updateData["label"]);
+                    }
+
+                    $this->update($sql, $updateData, true);
                 } else {
                     $sql = "INSERT INTO $tgv
 					(value_id,store_id,position,disabled,entity_id,label)
