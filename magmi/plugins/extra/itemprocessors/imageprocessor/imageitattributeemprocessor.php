@@ -92,6 +92,7 @@ class ImageAttributeItemProcessor extends Magmi_ItemProcessor
         }
         // use ";" as image separator
         $images = explode(";", $ivalue);
+
         $imageindex = 0;
         // for each image
         foreach ($images as $imagefile) {
@@ -185,6 +186,7 @@ class ImageAttributeItemProcessor extends Magmi_ItemProcessor
 
         // else copy image file
         $imagefile = $this->copyImageFile($imagefile, $item, array("store" => $storeid, "attr_code" => $attrcode));
+        
         $ovalue = $imagefile;
         // add to gallery as excluded
         if ($imagefile !== false) {
@@ -194,14 +196,14 @@ class ImageAttributeItemProcessor extends Magmi_ItemProcessor
             }
             $targetsids = $this->getStoreIdsForStoreScope($item["store"]);
             $vid = $this->addImageToGallery($pid, $storeid, $attrdesc, $imagefile, $targetsids, $label, $exclude,
-                $attrdesc["attribute_id"]);
+                 $attrdesc["attribute_id"]);
         }
+        
         return $ovalue;
     }
 
     public function handleVarcharAttribute($pid, &$item, $storeid, $attrcode, $attrdesc, $ivalue)
     {
-
         // trimming
         $ivalue = trim($ivalue);
         if ($ivalue == "") {
@@ -212,7 +214,7 @@ class ImageAttributeItemProcessor extends Magmi_ItemProcessor
         switch ($attrdesc["frontend_input"]) {
             case "gallery":
 
-                $ovalue = $this->handleGalleryTypeAttribute($pid, $item, $storeid, $attrcode, $attrdesc, $ivalue);
+               $ovalue = $this->handleGalleryTypeAttribute($pid, $item, $storeid, $attrcode, $attrdesc, $ivalue);
                 break;
             case "media_image":
                 $ovalue = $this->handleImageTypeAttribute($pid, $item, $storeid, $attrcode, $attrdesc, $ivalue);
@@ -238,14 +240,16 @@ class ImageAttributeItemProcessor extends Magmi_ItemProcessor
 
         $sql = "SELECT $t.value_id FROM $t ";
         $vc = $this->tablename('catalog_product_entity_media_gallery');
-        if ($refid != null) {
-            $sql .= "JOIN $vc ON $t.value_id=$vc.value_id WHERE $vc.attribute_id=? AND $t.entity_id=? AND $t.store_id=?";
-            $imgid = $this->selectone($sql, array($refid, $pid, $store_id), 'value_id');
-        } else {
-            $sql .= "JOIN $vc ON $t.value_id=$vc.value_id WHERE $t.entity_id=? AND $t.store_id=?";
-            $sql .= " AND $vc.value=? AND $vc.attribute_id=?";
-            $imgid = $this->selectone($sql, array($pid, $store_id, $imgname, $attid), 'value_id');
-        }
+        // Note: This has been removed because Magmi would insert duplicate entries into the gallery table. This may have been required in M1, but not M2.
+        // refid is one of the other image attributes, e.g. 87 = image. This will always create a new image for the attribute, which we don't want.
+        // if ($refid != null) {
+        //     $sql .= "JOIN $vc ON $t.value_id=$vc.value_id WHERE $vc.attribute_id=? AND $t.entity_id=? AND $t.store_id=?";
+        //     $imgid = $this->selectone($sql, array($refid, $pid, $store_id), 'value_id');
+        // } else {
+        $sql .= "JOIN $vc ON $t.value_id=$vc.value_id WHERE $t.entity_id=? AND $t.store_id=?";
+        $sql .= " AND $vc.value=? AND $vc.attribute_id=?";
+        $imgid = $this->selectone($sql, array($pid, $store_id, $imgname, $attid), 'value_id');
+        // }
 
         if ($imgid == null) {
             // insert image in media_gallery
@@ -292,6 +296,7 @@ class ImageAttributeItemProcessor extends Magmi_ItemProcessor
     public function addImageToGallery($pid, $storeid, $attrdesc, $imgname, $targetsids, $imglabel = null, $excluded = false,
                                       $refid = null)
     {
+        
         $gal_attinfo = $this->getAttrInfo("media_gallery");
         $tg = $this->tablename('catalog_product_entity_media_gallery');
         $tgv = $this->tablename('catalog_product_entity_media_gallery_value');
