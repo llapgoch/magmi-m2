@@ -15,6 +15,7 @@ class ImageAttributeItemProcessor extends Magmi_ItemProcessor
     protected $_mdh;
     protected $_remoteroot = "";
     protected $debug;
+    protected $changedImages = [];
 
     public function initialize($params)
     {
@@ -53,6 +54,16 @@ class ImageAttributeItemProcessor extends Magmi_ItemProcessor
     public function cachesort($v1, $v2)
     {
         return $v2 - $v1;
+    }
+
+    /**
+     * 
+     *
+     * @return void
+     */
+    public function getChangedImages()
+    {
+        return $this->changedImages;
     }
 
     public function setErrorImg($img)
@@ -502,11 +513,22 @@ class ImageAttributeItemProcessor extends Magmi_ItemProcessor
         if ($impath == $this->_lastimage) {
             return $impath;
         }
+
+        $fileExists = $this->_mdh->file_exists($targetpath);
+
         /* test if imagefile comes from export */
-        if (!$this->_mdh->file_exists($targetpath) || $this->getParam("IMG:writemode") == "override") {
+        if (!$fileExists || $this->getParam("IMG:writemode") == "override") {
             // if we already had problems with this target,assume we'll get others.
             if ($this->isErrorImage($impath)) {
                 return false;
+            }
+            
+            $f1 = md5_file($targetpath);
+            $f2 = md5_file($imgfile);
+
+            
+            if($f1 !== $f2){
+                $this->changedImages[] = $impath;
             }
 
             /* try to recursively create target dir */
