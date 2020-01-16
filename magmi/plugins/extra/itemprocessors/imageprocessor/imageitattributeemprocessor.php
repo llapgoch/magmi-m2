@@ -523,12 +523,14 @@ class ImageAttributeItemProcessor extends Magmi_ItemProcessor
                 return false;
             }
             
-            $f1 = md5_file($targetpath);
-            $f2 = md5_file($imgfile);
+            if(file_exists($targetpath)) {
+                $f1 = md5_file($targetpath);
+                $f2 = md5_file($imgfile);
 
-            
-            if($f1 !== $f2){
-                $this->changedImages[] = $impath;
+                
+                if($f1 !== $f2){
+                    $this->changedImages[] = $impath;
+                }
             }
 
             /* try to recursively create target dir */
