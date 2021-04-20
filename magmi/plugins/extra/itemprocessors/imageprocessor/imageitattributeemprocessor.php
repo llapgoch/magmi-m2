@@ -16,6 +16,7 @@ class ImageAttributeItemProcessor extends Magmi_ItemProcessor
     protected $_remoteroot = "";
     protected $debug;
     protected $changedImages = [];
+    protected $imageList = [];
 
     public function initialize($params)
     {
@@ -509,6 +510,11 @@ class ImageAttributeItemProcessor extends Magmi_ItemProcessor
         $l2d = "pub/media/catalog/product/$i1/$i2";
         // test for existence
         $targetpath = "$l2d/$bimgfile";
+        // List of processed images
+        $this->imageList[] = [
+            'image' => $impath,
+            'sku' => $item['sku']
+        ];
         /* test for same image (without problem) */
         if ($impath == $this->_lastimage) {
             return $impath;
@@ -691,5 +697,10 @@ class ImageAttributeItemProcessor extends Magmi_ItemProcessor
             $this->log("Unexpected problem in image attributes retrieval", "warning");
         }
         unset($attids);
+    }
+
+    public function getProcessedImages()
+    {
+        return $this->imageList;
     }
 }
