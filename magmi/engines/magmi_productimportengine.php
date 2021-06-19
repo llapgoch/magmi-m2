@@ -1707,7 +1707,7 @@ class Magmi_ProductImportEngine extends Magmi_Engine
                         $data[] = $attid;
                         $data[] = $store_id;
                         $data[] = $pid;
-                        $data[] = $ovalue === '__NULL__' ? null : $ovalue;
+                        $data[] = $ovalue === '__NULL__' ? null : (int) $ovalue;
                         $insstr = "(?,?,?,?)";
                         $inserts[] = $insstr;
                     }
