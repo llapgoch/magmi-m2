@@ -1704,10 +1704,20 @@ class Magmi_ProductImportEngine extends Magmi_Engine
                     // if we have something to do with this value
                     if ($ovalue !== false && $ovalue !== null)
                     {
+                        if($ovalue !== '__NULL__') {
+                            if($tp === 'int') {
+                                $ovalue = (int) $ovalue;
+                            }
+                            
+                            if($tp === 'decimal') {
+                                $ovalue = (float) $ovalue;
+                            }
+                        }
+
                         $data[] = $attid;
                         $data[] = $store_id;
                         $data[] = $pid;
-                        $data[] = $ovalue === '__NULL__' ? null : (int) $ovalue;
+                        $data[] = $ovalue === '__NULL__' ? null : $ovalue;
                         $insstr = "(?,?,?,?)";
                         $inserts[] = $insstr;
                     }
