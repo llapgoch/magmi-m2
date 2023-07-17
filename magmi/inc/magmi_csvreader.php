@@ -76,7 +76,8 @@ class Magmi_CSVReader extends Magmi_Mixin
     public function checkCSV()
     {
         $this->_curline = 0;
-        ini_set("auto_detect_line_endings", true);
+        // This breaks in PHP 8 - deprecated. This should only be for older Mac files so we should be ok
+        // ini_set("auto_detect_line_endings", true);
         if (!isset($this->_filename)) {
             throw new Magmi_CSVException("No csv file set");
         }
