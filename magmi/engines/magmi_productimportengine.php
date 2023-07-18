@@ -892,7 +892,7 @@ class Magmi_ProductImportEngine extends Magmi_Engine
     public function touchProduct($pid)
     {
         $tname = $this->tablename('catalog_product_entity');
-        $this->update("UPDATE $tname SET updated_at=? WHERE entity_id=?", array(strftime("%Y-%m-%d %H:%M:%S"), $pid));
+        $this->update("UPDATE $tname SET updated_at=? WHERE entity_id=?", array(date("Y-m-d H:i:s"), $pid));
     }
 
     public function engineRun($params, $forcebuiltin = array())
@@ -1369,7 +1369,7 @@ class Magmi_ProductImportEngine extends Magmi_Engine
     public function getItemIds($item)
     {
         $sku = $item["sku"];
-        if (strcmp($sku, $this->_curitemids["sku"]) != 0)
+        if (strcmp($sku, (string) $this->_curitemids["sku"]) != 0)
         {
             // try to find item ids in db
             $cids = $this->getProductIds($sku);
@@ -1468,8 +1468,8 @@ class Magmi_ProductImportEngine extends Magmi_Engine
         $item['type_id'] = $item['type'];
         $item['attribute_set_id'] = $asid;
         $item['entity_type_id'] = $this->getProductEntityType();
-        $item['created_at'] = strftime("%Y-%m-%d %H:%M:%S");
-        $item['updated_at'] = strftime("%Y-%m-%d %H:%M:%S");
+        $item['created_at'] = date("Y-m-d H:i:s");
+        $item['updated_at'] = date("Y-m-d H:i:s");
         $columns = array_intersect(array_keys($item), $this->getProdCols());
         $values = $this->filterkvarr($item, $columns);
         $sql = "INSERT INTO `$tname` (" . implode(",", $columns) . ") VALUES (" . $this->arr2values($columns) . ")";
@@ -1508,7 +1508,7 @@ class Magmi_ProductImportEngine extends Magmi_Engine
             $item['type_id'] = $item['type'];
         }
         $item['entity_type_id'] = $this->getProductEntityType();
-        $item['updated_at'] = strftime("%Y-%m-%d %H:%M:%S");
+        $item['updated_at'] = date("Y-m-d H:i:s");
         $columns = array_intersect(array_keys($item), $this->getProdCols());
         $values = $this->filterkvarr($item, $columns);
 
