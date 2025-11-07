@@ -10,7 +10,7 @@ class tierpriceprocessor extends Magmi_ItemProcessor
 {
     protected $_tpcol = array();
     protected $_singlestore = 0;
-    protected $__pricescope = 2;
+    protected $_pricescope = 2;
 
     public function getPluginInfo()
     {
