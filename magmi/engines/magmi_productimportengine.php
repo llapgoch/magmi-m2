@@ -1721,8 +1721,8 @@ class Magmi_ProductImportEngine extends Magmi_Engine
             if ($cdiff > 0) {
                 $this->log('Invalid category ids found for sku ' . $item['sku'] . ":" . implode(",", $diff), "warning");
                 // remove invalid category entries
-                for ($i = 0; $i < $cdiff; $i++) {
-                    unset($cdata[$diff[$i]]);
+                foreach($diff as $k => $diffItem) {
+                    unset($cdata[$k]);
                 }
             }
 
