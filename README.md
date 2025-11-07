@@ -1,4 +1,3 @@
-Magmi 2 for Magento 2 > 2.1.x
 ===========================
 
 This is fork from official magmi Github reposiotry (https://github.com/dweeves/magmi-git). 
